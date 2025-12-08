@@ -24,6 +24,8 @@ int main()
     unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y];
     unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL];    // [0]=position courante x / [1] =position y / [2]=nbre de vies restantes / [3]=vitalit� / [4]=virus / [5]=nbre de pi�ces d'or trouv�es
     unsigned int ennemi1[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
+    unsigned int ennemi2[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
+    unsigned int ennemi3[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
 
     // variable pour deplacer personnage
     int touche;
@@ -37,6 +39,12 @@ int main()
     x_debut=16;
     y_debut=11;
     ajouter_ennemi(scene, ennemi1,x_debut,y_debut, SENS_DEPLACEMENT_BAS);
+    x_debut=20;
+    y_debut=30;
+    ajouter_ennemi(scene, ennemi2,x_debut,y_debut, SENS_DEPLACEMENT_HAUT);
+    x_debut=45;
+    y_debut=25;
+    ajouter_ennemi(scene, ennemi3,x_debut,y_debut, SENS_DEPLACEMENT_GAUCHE);
 
 
     while ( 1 )
@@ -67,6 +75,8 @@ int main()
         deplacer_personnage(scene, personnage_principal, touche);
 
         animer_ennemi(scene, ennemi1);
+        animer_ennemi(scene, ennemi2);
+        animer_ennemi(scene, ennemi3);
     }
 
     return 0;
@@ -248,25 +258,41 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
 
     scene[pos_ennemi_x][pos_ennemi_y] = CASE_VIDE;
 
-    switch(ennemi[INDEX_ENNEMI_RALENTISSEMENT_DEPLACEMENT]) {
+    switch(ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT]) {
         case SENS_DEPLACEMENT_HAUT:
-            ennemi[1]--;
+            if (ennemi[1]>1 && scene[pos_ennemi_x][pos_ennemi_y-1] != CASE_OBSTACLE) ennemi[1]--;
+            else {
+                    ennemi[1]++;
+                    ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_BAS;
+            }
             break;
         case SENS_DEPLACEMENT_BAS:
-            ennemi[1]++;
+            if (ennemi[1]<TAILLE_SCENE_Y-2 && scene[pos_ennemi_x][pos_ennemi_y+1] != CASE_OBSTACLE) ennemi[1]++;
+            else {
+                    ennemi[1]--;
+                    ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_HAUT;
+            }
             break;
         case SENS_DEPLACEMENT_GAUCHE:
-            ennemi[1]--;
+            if (ennemi[0]>1 && scene[pos_ennemi_x-1][pos_ennemi_y] != CASE_OBSTACLE) ennemi[0]--;
+            else {
+                    ennemi[0]++;
+                    ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_DROITE;
+            }
             break;
         case SENS_DEPLACEMENT_DROITE:
-            ennemi[1]++;
+            if (ennemi[0]<TAILLE_SCENE_X-2 && scene[pos_ennemi_x+1][pos_ennemi_y] != CASE_OBSTACLE) ennemi[0]++;
+            else {
+                ennemi[0]--;
+                ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_GAUCHE;
+            }
             break;
     }
 
     pos_ennemi_x = ennemi[0];
     pos_ennemi_y = ennemi[1];
 
-    scene[pos_ennemi_x][pos_ennemi_y] = CASE_VIDE;
+    scene[pos_ennemi_x][pos_ennemi_y] = CASE_ENNEMI;
 }
 
 
