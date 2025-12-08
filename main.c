@@ -37,6 +37,8 @@ int main()
     x_debut=16;
     y_debut=11;
     ajouter_ennemi(scene, ennemi1,x_debut,y_debut, SENS_DEPLACEMENT_BAS);
+
+
     while ( 1 )
     {
         afficher_scene(scene);
@@ -63,6 +65,8 @@ int main()
         }
         //printf("\n\n\n%d\n\n\n", touche); //debug
         deplacer_personnage(scene, personnage_principal, touche);
+
+        animer_ennemi(scene, ennemi1);
     }
 
     return 0;
@@ -184,6 +188,7 @@ void ajouter_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigne
     scene[x_initial][y_initial]=CASE_ENNEMI;
     ennemi[0]=x_initial;
     ennemi[1]=y_initial;
+    ennemi[2] = sens_deplacement_initial;
 }
 
 
@@ -238,7 +243,30 @@ void ajouter_pieces_or(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsi
  */
 void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned int ennemi[NBRE_PROPRIETES_ENNEMI])
 {
-    // fonction � impl�menter
+    int pos_ennemi_x = ennemi[0];
+    int pos_ennemi_y = ennemi[1];
+
+    scene[pos_ennemi_x][pos_ennemi_y] = CASE_VIDE;
+
+    switch(ennemi[INDEX_ENNEMI_RALENTISSEMENT_DEPLACEMENT]) {
+        case SENS_DEPLACEMENT_HAUT:
+            ennemi[1]--;
+            break;
+        case SENS_DEPLACEMENT_BAS:
+            ennemi[1]++;
+            break;
+        case SENS_DEPLACEMENT_GAUCHE:
+            ennemi[1]--;
+            break;
+        case SENS_DEPLACEMENT_DROITE:
+            ennemi[1]++;
+            break;
+    }
+
+    pos_ennemi_x = ennemi[0];
+    pos_ennemi_y = ennemi[1];
+
+    scene[pos_ennemi_x][pos_ennemi_y] = CASE_VIDE;
 }
 
 
