@@ -3,6 +3,8 @@
 #include "console.h"
 #include "jeux.h"
 #include "autotests.h"
+#include <conio.h>
+#include <time.h>
 
 // Prototypes des fonctions � d�velopper
 void nettoyer_la_scene(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y]);
@@ -24,9 +26,12 @@ int main()
     unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y];
     unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL];    // [0]=position courante x / [1] =position y / [2]=nbre de vies restantes / [3]=vitalit� / [4]=virus / [5]=nbre de pi�ces d'or trouv�es
     unsigned int ennemi1[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
+    unsigned int ennemi2[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
+    unsigned int ennemi3[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
 
     // variable pour deplacer personnage
     int touche;
+
 
     nettoyer_la_scene(scene);
     ajouter_contour(scene);
@@ -37,7 +42,22 @@ int main()
     x_debut=16;
     y_debut=11;
     ajouter_ennemi(scene, ennemi1,x_debut,y_debut, SENS_DEPLACEMENT_BAS);
+    x_debut=20;
+    y_debut=30;
+    ajouter_ennemi(scene, ennemi2,x_debut,y_debut, SENS_DEPLACEMENT_HAUT);
+    x_debut=45;
+    y_debut=25;
+    ajouter_ennemi(scene, ennemi3,x_debut,y_debut, SENS_DEPLACEMENT_GAUCHE);
 
+    //Parametrer vies restantes
+    personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] = 3;
+    unsigned int nbre_de_pieces=5;
+    ajouter_pieces_or(scene,nbre_de_pieces);
+
+
+    //Detecter fin du jeu
+    if (personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] == 0) return 0;
+    if (personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES] == 5) return 0;
 
     while ( 1 )
     {
@@ -66,7 +86,15 @@ int main()
         //printf("\n\n\n%d\n\n\n", touche); //debug
         deplacer_personnage(scene, personnage_principal, touche);
 
+        //***annimer ennemi
         animer_ennemi(scene, ennemi1);
+        animer_ennemi(scene, ennemi2);
+        animer_ennemi(scene, ennemi3);
+
+        //***detecter collision
+        if (detecter_collision(personnage_principal, ennemi1) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
+        if (detecter_collision(personnage_principal, ennemi2) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
+        if (detecter_collision(personnage_principal, ennemi3) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
     }
 
     return 0;
@@ -168,6 +196,8 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
     pos_perso_x = personnage_principal[0];
     pos_perso_y = personnage_principal[1];
 
+     if (scene[pos_perso_x][pos_perso_y] == CASE_PIECE_OR) personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES]++;
+
     scene[pos_perso_x][pos_perso_y] = CASE_PERSONNAGE;
 }
 
@@ -229,7 +259,15 @@ void calculer_vitalite(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
  */
 void ajouter_pieces_or(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned int nbre_pieces)
 {
-    // fonction � impl�menter
+    int i;
+    srand( time( NULL ) );
+    for (i=0;i<nbre_pieces;i++){
+        int valeurx = rand()%48;
+        valeurx++;//si cest 0
+        int valeury = rand()%38;
+        valeury++;//si cest 0
+        scene[valeurx][valeury]=CASE_PIECE_OR;
+    }
 }
 
 
@@ -298,7 +336,11 @@ int detecter_collision(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
 {
     int collision = 0;
 
-    // fonction � completer
+        if (personnage_principal[0] == ennemi[0] && personnage_principal[1] == ennemi[1]){
+                Sleep(1500);
+                collision = 1;
+
+        }
 
     return collision;
 }
