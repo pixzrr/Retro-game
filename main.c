@@ -3,6 +3,7 @@
 #include "console.h"
 #include "jeux.h"
 #include "autotests.h"
+#include  <conio.h>
 
 // Prototypes des fonctions � d�velopper
 void nettoyer_la_scene(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y]);
@@ -47,6 +48,10 @@ int main()
     y_debut=25;
     ajouter_ennemi(scene, ennemi3,x_debut,y_debut, SENS_DEPLACEMENT_GAUCHE);
 
+    //Parametrer vies restantes
+    personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] = 3;
+    unsigned int nbre_de_pieces=5;
+    ajouter_pieces_or(scene,nbre_de_pieces);
 
     while ( 1 )
     {
@@ -185,6 +190,7 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
     pos_perso_x = personnage_principal[0];
     pos_perso_y = personnage_principal[1];
 
+        
     scene[pos_perso_x][pos_perso_y] = CASE_PERSONNAGE;
 }
 
@@ -246,7 +252,14 @@ void calculer_vitalite(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
  */
 void ajouter_pieces_or(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned int nbre_pieces)
 {
-    // fonction � impl�menter
+    int i;
+    for (i=0;i<nbre_pieces;i++){
+        int valeurx = rand()%48;
+        valeurx++;//si cest 0
+        int valeury = rand()%38;
+        valeury++;//si cest 0
+        scene[valeurx][valeury]=CASE_PIECE_OR;
+    }
 }
 
 
@@ -315,7 +328,11 @@ int detecter_collision(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
 {
     int collision = 0;
 
-    if (personnage_principal[0] == ennemi[0] && personnage_principal[1] == ennemi[1]) collision = 1;
+        if (personnage_principal[0] == ennemi[0] && personnage_principal[1] == ennemi[1]){
+                Sleep(1500);
+                collision = 1;
+
+        }
 
     return collision;
 }
