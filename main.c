@@ -27,6 +27,7 @@ int main()
 
     nettoyer_la_scene(scene);
     ajouter_contour(scene);
+    ajouter_obstacles(scene);
 
     while ( 1 )
     {
@@ -66,7 +67,7 @@ void ajouter_contour(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
     for (int y=0 ; y<TAILLE_SCENE_Y ;y++) scene[0][y] = CASE_CONTOUR;
     for (int y=0 ; y<TAILLE_SCENE_Y ;y++) scene[TAILLE_SCENE_X-1][y] = CASE_CONTOUR;
     for (int x=0 ; x<TAILLE_SCENE_X ;x++) scene[x][0] = CASE_CONTOUR;
-    for (int x=0 ; x<TAILLE_SCENE_X ;x++) scene[x][TAILLE_SCENE_X-1] = CASE_CONTOUR;
+    for (int x=0 ; x<TAILLE_SCENE_X ;x++) scene[x][TAILLE_SCENE_Y-1] = CASE_CONTOUR;
 }
 
 
@@ -79,7 +80,7 @@ void ajouter_contour(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
  */
 void ajouter_obstacles(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
 {
-    // fonction à implémenter
+    for (int x=0 ; x<TAILLE_SCENE_X/2 ; x++) scene[x][TAILLE_SCENE_Y/4] = CASE_OBSTACLE;
 }
 
 
