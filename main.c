@@ -22,8 +22,8 @@ void afficher_informations_jeu(int duree_jeu, int vitalite, int pieces_or, int v
 int main()
 {
     unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y];
-    unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL];    // [0]=position courante x / [1]=position y / [2]=nbre de vies restantes / [3]=vitalit� / [4]=virus / [5]=nbre de pi�ces d'or trouv�es
-    //unsigned int ennemi1[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
+    unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL];    // [0]=position courante x / [1] =position y / [2]=nbre de vies restantes / [3]=vitalit� / [4]=virus / [5]=nbre de pi�ces d'or trouv�es
+    unsigned int ennemi1[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
 
     // variable pour deplacer personnage
     int touche;
@@ -34,7 +34,9 @@ int main()
     int x_debut=5;
     int y_debut=2;
     ajouter_personnage_principal(scene,personnage_principal,x_debut,y_debut);
-
+    x_debut=16;
+    y_debut=11;
+    ajouter_ennemi(scene, ennemi1,x_debut,y_debut, SENS_DEPLACEMENT_BAS);
     while ( 1 )
     {
         afficher_scene(scene);
@@ -179,7 +181,9 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
  */
 void ajouter_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned int ennemi[NBRE_PROPRIETES_ENNEMI], int x_initial, int y_initial, int sens_deplacement_initial)
 {
-    // fonction � impl�menter
+    scene[x_initial][y_initial]=CASE_ENNEMI;
+    ennemi[0]=x_initial;
+    ennemi[1]=y_initial;
 }
 
 
@@ -291,4 +295,3 @@ void debug_personnage_principal(unsigned int personnage_principal[NBRE_PROPRIETE
     init_text_cursor(0, TAILLE_SCENE_Y+1, WHITE, BLACK);
     printf("Position personnage {x=%d ; y=%d}", personnage_principal[INDEX_PERSONNAGE_POS_X], personnage_principal[INDEX_PERSONNAGE_POS_Y]);
 }
-
