@@ -58,6 +58,7 @@ int main()
         case AUCUNE_TOUCHE_APPUYEE:
             touche = AUCUNE_TOUCHE_APPUYEE;
         }
+        //printf("\n\n\n%d\n\n\n", touche); //debug
         deplacer_personnage(scene, personnage_principal, touche);
     }
 
@@ -138,6 +139,11 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
                          unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL],
                          int sens_deplacement)
 {
+    int pos_perso_x = personnage_principal[0];
+    int pos_perso_y = personnage_principal[1];
+
+    scene[pos_perso_x][pos_perso_y] = CASE_VIDE;
+
     switch(sens_deplacement) {
         case SENS_DEPLACEMENT_HAUT:
             if (personnage_principal[1]>1) personnage_principal[1]--;
@@ -151,6 +157,11 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
         case SENS_DEPLACEMENT_DROITE:
             if (personnage_principal[0]<TAILLE_SCENE_X-1) personnage_principal[0]++;
     }
+
+    pos_perso_x = personnage_principal[0];
+    pos_perso_y = personnage_principal[1];
+
+    scene[pos_perso_x][pos_perso_y] = CASE_PERSONNAGE;
 }
 
 
