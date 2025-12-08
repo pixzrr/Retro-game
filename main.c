@@ -190,7 +190,8 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
     pos_perso_x = personnage_principal[0];
     pos_perso_y = personnage_principal[1];
 
-        
+    if (scene[pos_perso_x][pos_perso_y] == CASE_PIECE_OR) personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES]++;
+
     scene[pos_perso_x][pos_perso_y] = CASE_PERSONNAGE;
 }
 
