@@ -147,16 +147,16 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
 
     switch(sens_deplacement) {
         case SENS_DEPLACEMENT_HAUT:
-            if (personnage_principal[1]>1) personnage_principal[1]--;
+            if (personnage_principal[1]>1 && scene[pos_perso_x][pos_perso_y-1] != CASE_OBSTACLE) personnage_principal[1]--;
             break;
         case SENS_DEPLACEMENT_BAS:
-            if (personnage_principal[1]<TAILLE_SCENE_Y-2) personnage_principal[1]++;
+            if (personnage_principal[1]<TAILLE_SCENE_Y-2 && scene[pos_perso_x][pos_perso_y+1] != CASE_OBSTACLE) personnage_principal[1]++;
             break;
         case SENS_DEPLACEMENT_GAUCHE:
-            if (personnage_principal[0]>1) personnage_principal[0]--;
+            if (personnage_principal[0]>1 && scene[pos_perso_x-1][pos_perso_y] != CASE_OBSTACLE) personnage_principal[0]--;
             break;
         case SENS_DEPLACEMENT_DROITE:
-            if (personnage_principal[0]<TAILLE_SCENE_X-2) personnage_principal[0]++;
+            if (personnage_principal[0]<TAILLE_SCENE_X-2 && scene[pos_perso_x+1][pos_perso_y] != CASE_OBSTACLE) personnage_principal[0]++;
     }
 
     pos_perso_x = personnage_principal[0];
@@ -291,3 +291,4 @@ void debug_personnage_principal(unsigned int personnage_principal[NBRE_PROPRIETE
     init_text_cursor(0, TAILLE_SCENE_Y+1, WHITE, BLACK);
     printf("Position personnage {x=%d ; y=%d}", personnage_principal[INDEX_PERSONNAGE_POS_X], personnage_principal[INDEX_PERSONNAGE_POS_Y]);
 }
+
