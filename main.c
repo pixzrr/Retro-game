@@ -251,19 +251,31 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
     switch(ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT]) {
         case SENS_DEPLACEMENT_HAUT:
             if (ennemi[1]>1 && scene[pos_ennemi_x][pos_ennemi_y-1] != CASE_OBSTACLE) ennemi[1]--;
-            else ennemi[1]++;
+            else {
+                    ennemi[1]++;
+                    ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_BAS;
+            }
             break;
         case SENS_DEPLACEMENT_BAS:
             if (ennemi[1]<TAILLE_SCENE_Y-2 && scene[pos_ennemi_x][pos_ennemi_y+1] != CASE_OBSTACLE) ennemi[1]++;
-            else ennemi[1]--;
+            else {
+                    ennemi[1]--;
+                    ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_HAUT;
+            }
             break;
         case SENS_DEPLACEMENT_GAUCHE:
             if (ennemi[0]>1 && scene[pos_ennemi_x-1][pos_ennemi_y] != CASE_OBSTACLE) ennemi[0]--;
-            else ennemi[0]++;
+            else {
+                    ennemi[0]++;
+                    ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_DROITE;
+            }
             break;
         case SENS_DEPLACEMENT_DROITE:
             if (ennemi[0]<TAILLE_SCENE_X-2 && scene[pos_ennemi_x+1][pos_ennemi_y] != CASE_OBSTACLE) ennemi[0]++;
-            else ennemi[0]--;
+            else {
+                ennemi[0]--;
+                ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_GAUCHE;
+            }
             break;
     }
 
