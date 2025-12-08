@@ -24,7 +24,14 @@ int main()
     unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y];
     unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL];    // [0]=position courante x / [1]=position y / [2]=nbre de vies restantes / [3]=vitalité / [4]=virus / [5]=nbre de pièces d'or trouvées
     //unsigned int ennemi1[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
+
     nettoyer_la_scene(scene);
+    ajouter_contour(scene);
+    ajouter_obstacles(scene);
+    int x_debut=5;
+    int y_debut=2;
+    ajouter_personnage_principal(scene,personnage_principal,x_debut,y_debut);
+    afficher_informations_jeu(0,personnage_principal[INDEX_PERSONNAGE_VITALITE],personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES],personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
     while ( 1 )
     {
         afficher_scene(scene);
@@ -45,11 +52,8 @@ int main()
  */
 void nettoyer_la_scene(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
 {
-int i,j ; //bonjour
-for (i =0 ;i<TAILLE_SCENE_X ;i++ ){
-    for (j =0 ;j<TAILLE_SCENE_Y ;j++ ){
-        scene[i][j]= COULEUR_CASE_VIDE ;
-        }
+    for (int x=0 ; x<TAILLE_SCENE_X ; x++) {
+        for (int y=0 ; y<TAILLE_SCENE_Y ; y++) scene[x][y] = CASE_VIDE;
     }
 }
 
@@ -63,7 +67,10 @@ for (i =0 ;i<TAILLE_SCENE_X ;i++ ){
  */
 void ajouter_contour(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
 {
-    // fonction à implémenter
+    for (int y=0 ; y<TAILLE_SCENE_Y ;y++) scene[0][y] = CASE_CONTOUR;
+    for (int y=0 ; y<TAILLE_SCENE_Y ;y++) scene[TAILLE_SCENE_X-1][y] = CASE_CONTOUR;
+    for (int x=0 ; x<TAILLE_SCENE_X ;x++) scene[x][0] = CASE_CONTOUR;
+    for (int x=0 ; x<TAILLE_SCENE_X ;x++) scene[x][TAILLE_SCENE_Y-1] = CASE_CONTOUR;
 }
 
 
@@ -76,7 +83,8 @@ void ajouter_contour(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
  */
 void ajouter_obstacles(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
 {
-    // fonction à implémenter
+    for (int x=10 ; x<=20 ; x++) scene[x][5] = CASE_OBSTACLE;
+    for (int y=5 ; y<=15; y++) scene[10][y] = CASE_OBSTACLE;
 }
 
 
@@ -90,7 +98,9 @@ void ajouter_obstacles(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
  */
 void ajouter_personnage_principal(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL], int x_initial, int y_initial)
 {
-    // fonction à implémenter
+    scene[x_initial][y_initial]=CASE_PERSONNAGE;
+    personnage_principal[0]=x_initial;
+    personnage_principal[1]=y_initial;
 }
 
 // _________________________________________________________________________
@@ -106,7 +116,7 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
                          unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL],
                          int sens_deplacement)
 {
-    // fonction à implémenter
+
 }
 
 
@@ -211,7 +221,14 @@ int detecter_collision(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
  */
 void afficher_informations_jeu(int duree_jeu, int vitalite, int pieces_or, int vies_restantes)
 {
-    // fonction à implémenter
+    init_text_cursor(0, TAILLE_SCENE_Y+2, WHITE, BLACK);
+    printf("Duree du jeu :%d ",duree_jeu);
+    init_text_cursor(0, TAILLE_SCENE_Y+3, WHITE, BLACK);
+    printf("Vitalite :%d pct", vitalite);
+    init_text_cursor(0, TAILLE_SCENE_Y+4, WHITE, BLACK);
+    printf("Pieces d'or :%d ", pieces_or);
+    init_text_cursor(0, TAILLE_SCENE_Y+5, WHITE, BLACK);
+    printf("Vies_restantes :%d ", vies_restantes);
 }
 
 
@@ -228,4 +245,3 @@ void debug_personnage_principal(unsigned int personnage_principal[NBRE_PROPRIETE
     init_text_cursor(0, TAILLE_SCENE_Y+1, WHITE, BLACK);
     printf("Position personnage {x=%d ; y=%d}", personnage_principal[INDEX_PERSONNAGE_POS_X], personnage_principal[INDEX_PERSONNAGE_POS_Y]);
 }
-
