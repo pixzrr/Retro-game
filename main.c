@@ -30,6 +30,7 @@ int main()
     // variable pour deplacer personnage
     int touche;
 
+
     nettoyer_la_scene(scene);
     ajouter_contour(scene);
     ajouter_obstacles(scene);
@@ -74,9 +75,15 @@ int main()
         //printf("\n\n\n%d\n\n\n", touche); //debug
         deplacer_personnage(scene, personnage_principal, touche);
 
+        //***annimer ennemi
         animer_ennemi(scene, ennemi1);
         animer_ennemi(scene, ennemi2);
         animer_ennemi(scene, ennemi3);
+
+        //***detecter collision
+        if (detecter_collision(personnage_principal, ennemi1) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
+        if (detecter_collision(personnage_principal, ennemi2) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
+        if (detecter_collision(personnage_principal, ennemi3) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
     }
 
     return 0;
@@ -308,7 +315,7 @@ int detecter_collision(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
 {
     int collision = 0;
 
-    // fonction � completer
+    if (personnage_principal[0] == ennemi[0] && personnage_principal[1] == ennemi[1]) collision = 1;
 
     return collision;
 }
