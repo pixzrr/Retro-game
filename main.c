@@ -4,7 +4,7 @@
 #include "jeux.h"
 #include "autotests.h"
 
-// Prototypes des fonctions Ã  dÃ©velopper
+// Prototypes des fonctions à développer
 void nettoyer_la_scene(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y]);
 void ajouter_contour(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y]);
 void ajouter_obstacles(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y]);
@@ -22,8 +22,11 @@ void afficher_informations_jeu(int duree_jeu, int vitalite, int pieces_or, int v
 int main()
 {
     unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y];
-    unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL];    // [0]=position courante x / [1]=position y / [2]=nbre de vies restantes / [3]=vitalitÃ© / [4]=virus / [5]=nbre de piÃ¨ces d'or trouvÃ©es
+    unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL];    // [0]=position courante x / [1]=position y / [2]=nbre de vies restantes / [3]=vitalité / [4]=virus / [5]=nbre de pièces d'or trouvées
     //unsigned int ennemi1[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
+
+    // variable pour deplacer personnage
+    int touche;
 
     nettoyer_la_scene(scene);
     ajouter_contour(scene);
@@ -37,6 +40,25 @@ int main()
         afficher_scene(scene);
         debug_personnage_principal(personnage_principal);
         Sleep(25);  // Ajuste la vitesse d'animation du jeu
+
+        //***deplacer personnage
+        switch(touche_appuyee()) {
+        case key_UP:
+            touche = SENS_DEPLACEMENT_HAUT;
+            break;
+        case key_DOWN:
+            touche = SENS_DEPLACEMENT_BAS;
+            break;
+        case key_LEFT:
+            touche = SENS_DEPLACEMENT_GAUCHE;
+            break;
+        case key_RIGHT:
+            touche = SENS_DEPLACEMENT_DROITE;
+            break;
+        case AUCUNE_TOUCHE_APPUYEE:
+            touche = AUCUNE_TOUCHE_APPUYEE;
+        }
+        deplacer_personnage(scene, personnage_principal, touche);
     }
 
     return 0;
@@ -44,9 +66,9 @@ int main()
 
 
 // _________________________________________________________________________
-/** \brief CrÃ©er une scÃ¨ne vierge (efface le contenu du tableau)
+/** \brief Créer une scène vierge (efface le contenu du tableau)
  *
- * \param[in,out] scene le tableau contenant la scene Ã  effacer
+ * \param[in,out] scene le tableau contenant la scene à effacer
  * \return --
  *
  */
@@ -89,10 +111,10 @@ void ajouter_obstacles(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
 
 
 // _________________________________________________________________________
-/** \brief Place le personnage principal sur la scÃ¨ne et initialise ses propriÃ©tÃ©Ã©
+/** \brief Place le personnage principal sur la scène et initialise ses propriétéé
  *
- * \param[in,out] scene[TAILLE_SCENE_X][TAILLE_SCENE_Y] la scÃ¨ne sur laquelle ajouter le personnage principal
- * \param personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL] le tableau de propriÃ©tÃ©s du personnage principal
+ * \param[in,out] scene[TAILLE_SCENE_X][TAILLE_SCENE_Y] la scène sur laquelle ajouter le personnage principal
+ * \param personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL] le tableau de propriétés du personnage principal
  * \return --
  *
  */
@@ -106,8 +128,8 @@ void ajouter_personnage_principal(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCE
 // _________________________________________________________________________
 /** \brief Deplace le personnage principal
  *
- * \param[in,out] scene la scÃ¨ne
- * \param[in,out] personnage_principal le tableau de proprietÃ©s du personnage principal
+ * \param[in,out] scene la scène
+ * \param[in,out] personnage_principal le tableau de proprietés du personnage principal
  * \param[in] sens_deplacement le sens de deplacement parmi une des 4 valeurs possibles : SENS_DEPLACEMENT_BAS / SENS_DEPLACEMENT_HAUT / SENS_DEPLACEMENT_GAUCHE / SENS_DEPLACEMENT_DROITE
  * \return --
  *
@@ -116,8 +138,18 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
                          unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL],
                          int sens_deplacement)
 {
-    switch (sens_deplacement) {
-        case :
+    switch(sens_deplacement) {
+        case SENS_DEPLACEMENT_HAUT:
+            if (personnage_principal[1]>1) personnage_principal[1]--;
+            break;
+        case SENS_DEPLACEMENT_BAS:
+            if (personnage_principal[1]<TAILLE_SCENE_Y-1) personnage_principal[1]++;
+            break;
+        case SENS_DEPLACEMENT_GAUCHE:
+            if (personnage_principal[0]>1) personnage_principal[0]--;
+            break;
+        case SENS_DEPLACEMENT_DROITE:
+            if (personnage_principal[0]<TAILLE_SCENE_X-1) personnage_principal[0]++;
     }
 }
 
@@ -127,15 +159,15 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
  *
  * \param[in,out] scene[TAILLE_SCENE_X][TAILLE_SCENE_Y] la scene
  * \param[in,out] ennemi[NBRE_PROPRIETES_ENNEMI] le tableau contenant les proprietes de l'ennemi
- * \param[in] x_initial la position initiale en X de l'ennemi sur la scÃ¨ne
- * \param[in] y_initial la position initiale en Y de l'ennemi sur la scÃ¨ne
- * \param[in] sens_deplacement_initial le sens de dÃ©placement parmi une des 4 valeurs possibles : SENS_DEPLACEMENT_BAS / SENS_DEPLACEMENT_HAUT / SENS_DEPLACEMENT_GAUCHE / SENS_DEPLACEMENT_DROITE
+ * \param[in] x_initial la position initiale en X de l'ennemi sur la scène
+ * \param[in] y_initial la position initiale en Y de l'ennemi sur la scène
+ * \param[in] sens_deplacement_initial le sens de déplacement parmi une des 4 valeurs possibles : SENS_DEPLACEMENT_BAS / SENS_DEPLACEMENT_HAUT / SENS_DEPLACEMENT_GAUCHE / SENS_DEPLACEMENT_DROITE
  * \return --
  *
  */
 void ajouter_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned int ennemi[NBRE_PROPRIETES_ENNEMI], int x_initial, int y_initial, int sens_deplacement_initial)
 {
-    // fonction Ã  implÃ©menter
+    // fonction à implémenter
 }
 
 
@@ -149,34 +181,34 @@ void ajouter_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigne
  */
 void ajouter_vitalite(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], int nbre_fioles)
 {
-    // fonction Ã  implÃ©menter
+    // fonction à implémenter
 }
 
 // _________________________________________________________________________
 
-/** \brief GÃ¨re la diminution du niveau de vitalitÃ© tout les Xmsec
+/** \brief Gère la diminution du niveau de vitalité tout les Xmsec
  *
  * \param[in,out] personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL] les proprietes du personnage principal
- * \param[in] duree_jeu la durÃ©e du jeu en [millisecondes]
+ * \param[in] duree_jeu la durée du jeu en [millisecondes]
  * \return --
  *
  */
 void calculer_vitalite(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL], int duree_jeu)
 {
-    // fonction Ã  implÃ©menter
+    // fonction à implémenter
 }
 
 // _________________________________________________________________________
 /** \brief Ajoute un nombre de pieces d'or sur la scene
  *
  * \param[in,out] scene[TAILLE_SCENE_X][TAILLE_SCENE_Y] la scene
- * \param[in] nbre_pieces le nombre de piÃ¨ces Ã  crÃ©er sur la scÃ¨ne
+ * \param[in] nbre_pieces le nombre de pièces à créer sur la scène
  * \return --
  *
  */
 void ajouter_pieces_or(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned int nbre_pieces)
 {
-    // fonction Ã  implÃ©menter
+    // fonction à implémenter
 }
 
 
@@ -190,7 +222,7 @@ void ajouter_pieces_or(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsi
  */
 void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned int ennemi[NBRE_PROPRIETES_ENNEMI])
 {
-    // fonction Ã  implÃ©menter
+    // fonction à implémenter
 }
 
 
@@ -206,7 +238,7 @@ int detecter_collision(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
 {
     int collision = 0;
 
-    // fonction Ã  completer
+    // fonction à completer
 
     return collision;
 }
@@ -240,4 +272,3 @@ void debug_personnage_principal(unsigned int personnage_principal[NBRE_PROPRIETE
     init_text_cursor(0, TAILLE_SCENE_Y+1, WHITE, BLACK);
     printf("Position personnage {x=%d ; y=%d}", personnage_principal[INDEX_PERSONNAGE_POS_X], personnage_principal[INDEX_PERSONNAGE_POS_Y]);
 }
-
