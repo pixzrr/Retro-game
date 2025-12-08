@@ -1,0 +1,384 @@
+# depslib dependency file v1.0
+1697737239 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_butor\main.c
+	<stdio.h>
+	<stdlib.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1697254220 c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_butor\console.h
+	<windows.h>
+	<windef.h>
+	<wincon.h>
+	"jeux.h"
+
+1697286811 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_butor\console.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+
+1697253458 c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_butor\jeux.h
+
+1692939888 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_butor\autotests.c
+	<stdio.h>
+	"autotests.h"
+
+1692939264 c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_butor\autotests.h
+	"jeux.h"
+
+1692939888 source:c:\users\thales\documents\2023-2024\robotique\miniprojet-iut\projet_butor\autotests.c
+	<stdio.h>
+	"autotests.h"
+
+1692939264 c:\users\thales\documents\2023-2024\robotique\miniprojet-iut\projet_butor\autotests.h
+	"jeux.h"
+
+1697253458 c:\users\thales\documents\2023-2024\robotique\miniprojet-iut\projet_butor\jeux.h
+
+1697286811 source:c:\users\thales\documents\2023-2024\robotique\miniprojet-iut\projet_butor\console.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+
+1697254220 c:\users\thales\documents\2023-2024\robotique\miniprojet-iut\projet_butor\console.h
+	<windows.h>
+	<windef.h>
+	<wincon.h>
+	"jeux.h"
+
+1697479663 source:c:\users\thales\documents\2023-2024\robotique\miniprojet-iut\projet_butor\main.c
+	<stdio.h>
+	<stdlib.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1692939888 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_retro-game\autotests.c
+	<stdio.h>
+	"autotests.h"
+
+1692939264 c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_retro-game\autotests.h
+	"jeux.h"
+
+1697253458 c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_retro-game\jeux.h
+
+1697286811 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_retro-game\console.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+
+1697254220 c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_retro-game\console.h
+	<windows.h>
+	<windef.h>
+	<wincon.h>
+	"jeux.h"
+
+1697949398 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_retro-game\main.c
+	<stdio.h>
+	<stdlib.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1697949272 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_retro-game\main_etudiants.c
+	<stdio.h>
+	<stdlib.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1697950320 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_retro-game\main_corrige_q1.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1697950630 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_retro-game\main_corrige_q2.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1697950887 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\projet_retro-game\main_corrige_q3.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1692939888 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\autotests.c
+	<stdio.h>
+	"autotests.h"
+
+1692939264 c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\autotests.h
+	"jeux.h"
+
+1698395729 c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\jeux.h
+
+1697286811 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\console.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+
+1697254220 c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\console.h
+	<windows.h>
+	<windef.h>
+	<wincon.h>
+	"jeux.h"
+
+1698497260 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main.c
+	<stdio.h>
+	<stdlib.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698411566 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q3.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698397929 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_complet.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<time.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698409428 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q1.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698411580 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q4.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698410911 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q5.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698411400 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q6.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698411547 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q2.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698419865 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q7.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698419936 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q9.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698419917 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q8.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698413115 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q11.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698420000 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q12.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698420017 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q13.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698419961 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q10.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698421072 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q14.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<time.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698421857 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q16.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<time.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698493303 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q17.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<time.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1698497103 source:c:\users\thales\documents\2023-2024\langagec\miniprojet-iut\projet_retro-game\main_corrige_q18.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<time.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1692936288 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\01_version_etudiants\projet_retro-game\autotests.c
+	<stdio.h>
+	"autotests.h"
+
+1692935664 c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\01_version_etudiants\projet_retro-game\autotests.h
+	"jeux.h"
+
+1699679880 c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\01_version_etudiants\projet_retro-game\jeux.h
+
+1697283211 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\01_version_etudiants\projet_retro-game\console.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+
+1697250620 c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\01_version_etudiants\projet_retro-game\console.h
+	<windows.h>
+	<windef.h>
+	<wincon.h>
+	"jeux.h"
+
+1699680959 source:c:\users\cf52\documents\2023-2024\01_préparationprojetjeuconsole\miniprojet-iut\01_version_etudiants\projet_retro-game\main.c
+	<stdio.h>
+	<stdlib.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1692936288 source:c:\users\cf52\documents\2025-2026\01_langagec\miniprojet-iut\livraisons\miniprojet-iut\01_version_etudiants\projet_retro-game\autotests.c
+	<stdio.h>
+	"autotests.h"
+
+1692935664 c:\users\cf52\documents\2025-2026\01_langagec\miniprojet-iut\livraisons\miniprojet-iut\01_version_etudiants\projet_retro-game\autotests.h
+	"jeux.h"
+
+1764263682 c:\users\cf52\documents\2025-2026\01_langagec\miniprojet-iut\livraisons\miniprojet-iut\01_version_etudiants\projet_retro-game\jeux.h
+
+1764263663 source:c:\users\cf52\documents\2025-2026\01_langagec\miniprojet-iut\livraisons\miniprojet-iut\01_version_etudiants\projet_retro-game\main.c
+	<stdio.h>
+	<stdlib.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
+1697250620 c:\users\cf52\documents\2025-2026\01_langagec\miniprojet-iut\livraisons\miniprojet-iut\01_version_etudiants\projet_retro-game\console.h
+	<windows.h>
+	<windef.h>
+	<wincon.h>
+	"jeux.h"
+
+1764263692 source:c:\users\cf52\documents\2025-2026\01_langagec\miniprojet-iut\livraisons\miniprojet-iut\01_version_etudiants\projet_retro-game\console.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+
+1765199070 source:c:\users\45009444\downloads\projet_retro-game\projet_retro-game\autotests.c
+	<stdio.h>
+	"autotests.h"
+
+1765199070 c:\users\45009444\downloads\projet_retro-game\projet_retro-game\autotests.h
+	"jeux.h"
+
+1765199070 c:\users\45009444\downloads\projet_retro-game\projet_retro-game\jeux.h
+
+1765199070 source:c:\users\45009444\downloads\projet_retro-game\projet_retro-game\console.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"console.h"
+	"jeux.h"
+
+1765199070 c:\users\45009444\downloads\projet_retro-game\projet_retro-game\console.h
+	<windows.h>
+	<windef.h>
+	<wincon.h>
+	"jeux.h"
+
+1765199070 source:c:\users\45009444\downloads\projet_retro-game\projet_retro-game\main.c
+	<stdio.h>
+	<stdlib.h>
+	"console.h"
+	"jeux.h"
+	"autotests.h"
+
