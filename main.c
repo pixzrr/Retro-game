@@ -108,6 +108,30 @@ int main()
             i=0;
             //personnage_principal[INDEX_PERSONNAGE_VITALITE]--;
         }
+
+
+        //Detecter fin du jeu
+        if (personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] == 0) {
+            char texte[] = "Perdu !";
+            for (int i=0 ; i<strlen(texte) ; i++) {
+                init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, RED,BLACK);
+                printf("%c", texte[i]);
+            }
+            init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
+            sleep(1); // Pour eviter que le joueur ferme le programme sans faire exprès
+            return 0;
+        }
+        if (personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES] == 4) {
+            char texte[] = "Victoire !";
+            for (int i=0 ; i<strlen(texte) ; i++) {
+                init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, GREEN,BLACK);
+                printf("%c", texte[i]);
+            }
+            init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
+            sleep(1); // Pour eviter que le joueur ferme le programme sans faire exprès
+            return 0;
+        }
+
     }
 
     return 0;
@@ -375,13 +399,18 @@ int detecter_collision(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
     int collision = 0;
 
         if (personnage_principal[0] == ennemi[0] && personnage_principal[1] == ennemi[1]){
-                Sleep(1500);
                 collision = 1;
-
+                char message[] = "Colisionnage";
+                init_text_cursor(0, TAILLE_SCENE_Y, RED, BLACK);
+                puts(message);
+                sleep(1,5);
+                init_text_cursor(0, TAILLE_SCENE_Y, BLACK, BLACK);
+                puts(message);
         }
 
     return collision;
 }
+
 
 // _________________________________________________________________________
 /** \brief Affiche la position du personnage principal
