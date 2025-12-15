@@ -28,9 +28,15 @@ int main()
     unsigned int ennemi1[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
     unsigned int ennemi2[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
     unsigned int ennemi3[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
-
+    unsigned int tempsattente=25;
+    unsigned int tempsmsec=0;
     // variable pour deplacer personnage
     int touche;
+    // variable temps buffer
+    int tempsmsec_buffer=0;
+    int nb_pieces_buffer=0;
+    // initialiser le score
+    personnage_principal[SCORE_PARTIEL] = 0;
 
 
     nettoyer_la_scene(scene);
@@ -51,34 +57,37 @@ int main()
 
     //Parametrer vies restantes
     personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] = 3;
-    unsigned int nbre_de_pieces=5;
+    personnage_principal[INDEX_PERSONNAGE_VITALITE] = 100;
+    unsigned int nbre_de_pieces=7;
     ajouter_pieces_or(scene,nbre_de_pieces);
 
-
-    //Detecter fin du jeu
-    if (personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] == 0) return 0;
-    if (personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES] == 5) return 0;
+    unsigned int nbre_fioles=2;
+    ajouter_vitalite(scene,nbre_fioles);
 
     while ( 1 )
     {
         afficher_scene(scene);
         debug_personnage_principal(personnage_principal);
-        afficher_informations_jeu(0,personnage_principal[INDEX_PERSONNAGE_VITALITE],personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES],personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
-        Sleep(25);  // Ajuste la vitesse d'animation du jeu
+        afficher_informations_jeu(tempsmsec,personnage_principal[INDEX_PERSONNAGE_VITALITE],personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES],personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
+        calculer_vitalite(personnage_principal,tempsmsec);
 
         //***deplacer personnage
         switch(touche_appuyee()) {
         case key_UP:
             touche = SENS_DEPLACEMENT_HAUT;
+            personnage_principal[DISTANCE_PARCOURUE] += 1; // pour calculer le score
             break;
         case key_DOWN:
             touche = SENS_DEPLACEMENT_BAS;
+            personnage_principal[DISTANCE_PARCOURUE] += 1; // pour calculer le score
             break;
         case key_LEFT:
             touche = SENS_DEPLACEMENT_GAUCHE;
+            personnage_principal[DISTANCE_PARCOURUE] += 1; // pour calculer le score
             break;
         case key_RIGHT:
             touche = SENS_DEPLACEMENT_DROITE;
+            personnage_principal[DISTANCE_PARCOURUE] += 1; // pour calculer le score
             break;
         case AUCUNE_TOUCHE_APPUYEE:
             touche = AUCUNE_TOUCHE_APPUYEE;
@@ -86,15 +95,71 @@ int main()
         //printf("\n\n\n%d\n\n\n", touche); //debug
         deplacer_personnage(scene, personnage_principal, touche);
 
+
         //***annimer ennemi
-        animer_ennemi(scene, ennemi1);
+        int j;
+        j++;
+        if (j==FACTEUR_RALENTISSEMENT){
+            animer_ennemi(scene, ennemi1);
+            animer_ennemi(scene, ennemi3);
+            j=0;
+        }
         animer_ennemi(scene, ennemi2);
-        animer_ennemi(scene, ennemi3);
+
 
         //***detecter collision
         if (detecter_collision(personnage_principal, ennemi1) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
         if (detecter_collision(personnage_principal, ennemi2) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
         if (detecter_collision(personnage_principal, ennemi3) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
+
+        //***durée jeu
+        Sleep(tempsattente);
+        tempsmsec=tempsmsec+25;
+
+        calculer_scrore_partiel(personnage_principal, tempsmsec, &tempsmsec_buffer, &nb_pieces_buffer);
+        init_text_cursor(0, TAILLE_SCENE_Y+6, WHITE, BLACK);
+        printf("Score :%d ", personnage_principal[SCORE_PARTIEL]);
+
+        //***diminuer  la vie en permanence
+        int i;
+        i++;
+        if (i==3){
+            i=0;
+            //personnage_principal[INDEX_PERSONNAGE_VITALITE]--;
+        }
+
+
+        //Detecter fin du jeu
+        if (personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] == 0) {
+            char texte[] = "Perdu !";
+            for (int i=0 ; i<strlen(texte) ; i++) {
+                init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, RED,BLACK);
+                printf("%c", texte[i]);
+            }
+
+            int score_final = personnage_principal[SCORE_PARTIEL] + (personnage_principal[DISTANCE_PARCOURUE]*2);
+            init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, WHITE,BLACK);
+            printf("%d", score_final);
+
+            init_text_cursor(0, TAILLE_SCENE_Y+8, WHITE,BLACK);
+            afficher_scene(scene);
+            sleep(3); // Pour eviter que le joueur ferme le programme sans faire exprès
+            return 0;
+        }
+        if (personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES] == 4) {
+            char texte[] = "Victoire !";
+            for (int i=0 ; i<strlen(texte) ; i++) {
+                init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, GREEN,BLACK);
+                printf("%c", texte[i]);
+            }
+            init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
+            afficher_scene(scene);
+
+
+            sleep(3); // Pour eviter que le joueur ferme le programme sans faire exprès
+            return 0;
+        }
+
     }
 
     return 0;
@@ -141,8 +206,8 @@ void ajouter_contour(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
  */
 void ajouter_obstacles(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
 {
-    for (int x=10 ; x<=20 ; x++) scene[x][5] = CASE_OBSTACLE;
-    for (int y=5 ; y<=15; y++) scene[10][y] = CASE_OBSTACLE;
+    for (int x=10 ; x<20 ; x++) scene[x][5] = CASE_OBSTACLE;
+    for (int y=5 ; y<15; y++) scene[10][y] = CASE_OBSTACLE;
 }
 
 
@@ -197,6 +262,11 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
     pos_perso_y = personnage_principal[1];
 
      if (scene[pos_perso_x][pos_perso_y] == CASE_PIECE_OR) personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES]++;
+     if (scene[pos_perso_x][pos_perso_y] == CASE_VITALITE){
+        if (personnage_principal[INDEX_PERSONNAGE_VITALITE]<=80) personnage_principal[INDEX_PERSONNAGE_VITALITE]=personnage_principal[INDEX_PERSONNAGE_VITALITE]+20;
+        else personnage_principal[INDEX_PERSONNAGE_VITALITE]=100;
+     }
+
 
     scene[pos_perso_x][pos_perso_y] = CASE_PERSONNAGE;
 }
@@ -232,7 +302,15 @@ void ajouter_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigne
  */
 void ajouter_vitalite(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], int nbre_fioles)
 {
-    // fonction � impl�menter
+    int i;
+    srand( time( NULL ) );
+    for (i=0;i<nbre_fioles;i++){
+        int valeurx = rand()%48;
+        valeurx++;//si cest 0
+        int valeury = rand()%38;
+        valeury++;//si cest 0
+        scene[valeurx][valeury]=CASE_VITALITE;
+    }
 }
 
 // _________________________________________________________________________
@@ -246,7 +324,19 @@ void ajouter_vitalite(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], int n
  */
 void calculer_vitalite(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL], int duree_jeu)
 {
-    // fonction � impl�menter
+    if (duree_jeu%75==0){
+         personnage_principal[INDEX_PERSONNAGE_VITALITE]--;
+    }
+    if (personnage_principal[INDEX_PERSONNAGE_VITALITE]==0){
+        personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
+        afficher_informations_jeu(duree_jeu, personnage_principal[INDEX_PERSONNAGE_VITALITE], personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES], personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
+        personnage_principal[INDEX_PERSONNAGE_VITALITE]=100;
+        init_text_cursor(0, TAILLE_SCENE_Y+7, RED, BLACK);
+        printf("La vitalite est de 0 : vous avez perdu une vie!");
+        sleep(2);
+        init_text_cursor(0, TAILLE_SCENE_Y+7, BLACK, BLACK);
+        printf("La vitalité est de 0 : vous avez perdu une vie!");
+    }
 }
 
 // _________________________________________________________________________
@@ -321,6 +411,7 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
     pos_ennemi_y = ennemi[1];
 
     scene[pos_ennemi_x][pos_ennemi_y] = CASE_ENNEMI;
+    afficher_scene(scene);
 }
 
 
@@ -337,13 +428,18 @@ int detecter_collision(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
     int collision = 0;
 
         if (personnage_principal[0] == ennemi[0] && personnage_principal[1] == ennemi[1]){
-                Sleep(1500);
                 collision = 1;
-
+                char message[] = "Colisionnage";
+                init_text_cursor(0, TAILLE_SCENE_Y+8, RED, BLACK);
+                puts(message);
+                sleep(1,5);
+                init_text_cursor(0, TAILLE_SCENE_Y+8, BLACK, BLACK);
+                puts(message);
         }
 
     return collision;
 }
+
 
 // _________________________________________________________________________
 /** \brief Affiche la position du personnage principal
@@ -359,12 +455,27 @@ void afficher_informations_jeu(int duree_jeu, int vitalite, int pieces_or, int v
 {
     init_text_cursor(0, TAILLE_SCENE_Y+2, WHITE, BLACK);
     printf("Duree du jeu :%d ",duree_jeu);
-    init_text_cursor(0, TAILLE_SCENE_Y+3, WHITE, BLACK);
+    if (vitalite>=25) init_text_cursor(0, TAILLE_SCENE_Y+3, GREEN, BLACK);
+    else if (vitalite<25&&vitalite>=10) init_text_cursor(0, TAILLE_SCENE_Y+3, YELLOW, BLACK);
+    else init_text_cursor(0, TAILLE_SCENE_Y+3, RED, BLACK);
     printf("Vitalite :%d pct", vitalite);
     init_text_cursor(0, TAILLE_SCENE_Y+4, WHITE, BLACK);
     printf("Pieces d'or :%d ", pieces_or);
     init_text_cursor(0, TAILLE_SCENE_Y+5, WHITE, BLACK);
     printf("Vies_restantes :%d ", vies_restantes);
+}
+// _________________________________________________________________________
+// _________________________________________________________________________
+void calculer_scrore_partiel(int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL], int temps_jeu, int *buffer_temps_jeu, int *buffer_nb_pieces) { // NOUVELLE FONCTION
+    int test_pieces = personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES] - *buffer_nb_pieces;
+    if (temps_jeu - *buffer_temps_jeu >=1000) {
+            personnage_principal[SCORE_PARTIEL]+=2;
+            *buffer_temps_jeu+=1000 ;
+    }
+    if (test_pieces >= 1) {
+        personnage_principal[SCORE_PARTIEL]+=100*test_pieces;
+        *buffer_nb_pieces+=test_pieces;
+    }
 }
 
 
