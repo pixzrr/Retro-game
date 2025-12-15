@@ -64,7 +64,6 @@ int main()
         afficher_scene(scene);
         debug_personnage_principal(personnage_principal);
         afficher_informations_jeu(tempsmsec,personnage_principal[INDEX_PERSONNAGE_VITALITE],personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES],personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
-        Sleep(25);  // Ajuste la vitesse d'animation du jeu
         calculer_vitalite(personnage_principal,tempsmsec);
 
         //***deplacer personnage
@@ -90,11 +89,21 @@ int main()
         //***annimer ennemi
         int j;
         j++;
-        if (j==FACTEUR_RALENTISSEMENT){
-            animer_ennemi(scene, ennemi1);
-            animer_ennemi(scene, ennemi3);
-            j=0;
+        if (tempsmsec<=45000){
+            if (j==FACTEUR_RALENTISSEMENT){
+                animer_ennemi(scene, ennemi1);
+            }
         }
+        else animer_ennemi(scene, ennemi1);
+
+        if (tempsmsec<=60000){
+            if (j==FACTEUR_RALENTISSEMENT){
+                animer_ennemi(scene, ennemi3);
+            }
+        }
+        else animer_ennemi(scene, ennemi3);
+
+        if (j==FACTEUR_RALENTISSEMENT)j=0;
         animer_ennemi(scene, ennemi2);
 
 
@@ -192,9 +201,14 @@ void ajouter_obstacles(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
  */
 void ajouter_personnage_principal(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL], int x_initial, int y_initial)
 {
+    srand( time( NULL ) );
+        x_initial = rand()%48;
+        x_initial++;//si cest 0
+        y_initial = rand()%38;
+        y_initial++;//si cest 0
     scene[x_initial][y_initial]=CASE_PERSONNAGE;
-    personnage_principal[0]=x_initial;
-    personnage_principal[1]=y_initial;
+    personnage_principal[INDEX_PERSONNAGE_POS_X]=x_initial;
+    personnage_principal[INDEX_PERSONNAGE_POS_Y]=y_initial;
 }
 
 // _________________________________________________________________________
