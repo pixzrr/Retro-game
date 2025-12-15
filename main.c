@@ -53,7 +53,7 @@ int main()
     //Parametrer vies restantes
     personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] = 3;
     personnage_principal[INDEX_PERSONNAGE_VITALITE] = 100;
-    unsigned int nbre_de_pieces=5;
+    unsigned int nbre_de_pieces=7;
     ajouter_pieces_or(scene,nbre_de_pieces);
 
     unsigned int nbre_fioles=2;
@@ -65,6 +65,7 @@ int main()
         debug_personnage_principal(personnage_principal);
         afficher_informations_jeu(tempsmsec,personnage_principal[INDEX_PERSONNAGE_VITALITE],personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES],personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
         Sleep(25);  // Ajuste la vitesse d'animation du jeu
+        calculer_vitalite(personnage_principal,tempsmsec);
 
         //***deplacer personnage
         switch(touche_appuyee()) {
@@ -105,27 +106,7 @@ int main()
         i++;
         if (i==3){
             i=0;
-            personnage_principal[INDEX_PERSONNAGE_VITALITE]--;
-        }
-
-        //Detecter fin du jeu
-        if (personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] == 0) {
-            char texte[] = "Perdu !";
-            for (int i=0 ; i<strlen(texte) ; i++) {
-                init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, RED,BLACK);
-                printf("%c", texte[i]);
-            }
-            init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
-            return 0;
-        }
-        if (personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES] == 5) {
-            char texte[] = "Gagné !";
-            for (int i=0 ; i<strlen(texte) ; i++) {
-                init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, RED,BLACK);
-                printf("%c", texte[i]);
-            }
-            init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
-            return 0;
+            //personnage_principal[INDEX_PERSONNAGE_VITALITE]--;
         }
     }
 
@@ -291,7 +272,19 @@ void ajouter_vitalite(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], int n
  */
 void calculer_vitalite(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL], int duree_jeu)
 {
-    // fonction � impl�menter
+    if (duree_jeu%75==0){
+         personnage_principal[INDEX_PERSONNAGE_VITALITE]--;
+    }
+    if (personnage_principal[INDEX_PERSONNAGE_VITALITE]==0){
+        personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
+
+        personnage_principal[INDEX_PERSONNAGE_VITALITE]=100;
+        init_text_cursor(0, TAILLE_SCENE_Y+7, RED, BLACK);
+        printf("La vitalite est de 0 : vous avez perdu une vie!");
+        sleep(2);
+        init_text_cursor(0, TAILLE_SCENE_Y+7, BLACK, BLACK);
+        printf("La vitalité est de 0 : vous avez perdu une vie!");
+    }
 }
 
 // _________________________________________________________________________
@@ -382,13 +375,9 @@ int detecter_collision(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
     int collision = 0;
 
         if (personnage_principal[0] == ennemi[0] && personnage_principal[1] == ennemi[1]){
+                Sleep(1500);
                 collision = 1;
-                char message[] = "Colisionnage";
-                init_text_cursor(0, TAILLE_SCENE_Y, RED, BLACK);
-                puts(message);
-                sleep(1,5);
-                init_text_cursor(0, TAILLE_SCENE_Y, BLACK, BLACK);
-                puts(message);
+
         }
 
     return collision;
@@ -408,7 +397,9 @@ void afficher_informations_jeu(int duree_jeu, int vitalite, int pieces_or, int v
 {
     init_text_cursor(0, TAILLE_SCENE_Y+2, WHITE, BLACK);
     printf("Duree du jeu :%d ",duree_jeu);
-    init_text_cursor(0, TAILLE_SCENE_Y+3, WHITE, BLACK);
+    if (vitalite>=25) init_text_cursor(0, TAILLE_SCENE_Y+3, GREEN, BLACK);
+    else if (vitalite<25&&vitalite>=10) init_text_cursor(0, TAILLE_SCENE_Y+3, YELLOW, BLACK);
+    else init_text_cursor(0, TAILLE_SCENE_Y+3, RED, BLACK);
     printf("Vitalite :%d pct", vitalite);
     init_text_cursor(0, TAILLE_SCENE_Y+4, WHITE, BLACK);
     printf("Pieces d'or :%d ", pieces_or);
