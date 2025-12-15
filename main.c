@@ -52,7 +52,7 @@ int main()
 
     //Parametrer vies restantes
     personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] = 3;
-    personnage_principal[INDEX_PERSONNAGE_VITALITE] = 100;
+    personnage_principal[INDEX_PERSONNAGE_VITALITE] = 5;
     unsigned int nbre_de_pieces=7;
     ajouter_pieces_or(scene,nbre_de_pieces);
 
@@ -277,7 +277,7 @@ void calculer_vitalite(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
     }
     if (personnage_principal[INDEX_PERSONNAGE_VITALITE]==0){
         personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
-
+        afficher_informations_jeu(duree_jeu, personnage_principal[INDEX_PERSONNAGE_VITALITE], personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES], personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
         personnage_principal[INDEX_PERSONNAGE_VITALITE]=100;
         init_text_cursor(0, TAILLE_SCENE_Y+7, RED, BLACK);
         printf("La vitalite est de 0 : vous avez perdu une vie!");
