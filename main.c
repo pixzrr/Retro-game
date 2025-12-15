@@ -28,7 +28,8 @@ int main()
     unsigned int ennemi1[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
     unsigned int ennemi2[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
     unsigned int ennemi3[NBRE_PROPRIETES_ENNEMI];                             // [0]=position x / [1]=position y / [2]=direction / [3]=ralentissement
-
+    unsigned int tempsattente=25;
+    unsigned int tempsmsec=0;
     // variable pour deplacer personnage
     int touche;
 
@@ -51,14 +52,18 @@ int main()
 
     //Parametrer vies restantes
     personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] = 3;
+    personnage_principal[INDEX_PERSONNAGE_VITALITE] = 100;
     unsigned int nbre_de_pieces=5;
     ajouter_pieces_or(scene,nbre_de_pieces);
+
+    unsigned int nbre_fioles=2;
+    ajouter_vitalite(scene,nbre_fioles);
 
     while ( 1 )
     {
         afficher_scene(scene);
         debug_personnage_principal(personnage_principal);
-        afficher_informations_jeu(0,personnage_principal[INDEX_PERSONNAGE_VITALITE],personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES],personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
+        afficher_informations_jeu(tempsmsec,personnage_principal[INDEX_PERSONNAGE_VITALITE],personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES],personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
         Sleep(25);  // Ajuste la vitesse d'animation du jeu
 
         //***deplacer personnage
@@ -90,6 +95,18 @@ int main()
         if (detecter_collision(personnage_principal, ennemi1) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
         if (detecter_collision(personnage_principal, ennemi2) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
         if (detecter_collision(personnage_principal, ennemi3) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
+
+        //***durée jeu
+        Sleep(tempsattente);
+        tempsmsec=tempsmsec+25;
+
+        //***diminuer  la vie en permanence
+        int i;
+        i++;
+        if (i==3){
+            i=0;
+            personnage_principal[INDEX_PERSONNAGE_VITALITE]--;
+        }
     }
 
     return 0;
@@ -192,6 +209,11 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
     pos_perso_y = personnage_principal[1];
 
      if (scene[pos_perso_x][pos_perso_y] == CASE_PIECE_OR) personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES]++;
+     if (scene[pos_perso_x][pos_perso_y] == CASE_VITALITE){
+        if (personnage_principal[INDEX_PERSONNAGE_VITALITE]<=80) personnage_principal[INDEX_PERSONNAGE_VITALITE]=personnage_principal[INDEX_PERSONNAGE_VITALITE]+20;
+        else personnage_principal[INDEX_PERSONNAGE_VITALITE]=100;
+     }
+
 
     scene[pos_perso_x][pos_perso_y] = CASE_PERSONNAGE;
 }
@@ -227,7 +249,15 @@ void ajouter_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigne
  */
 void ajouter_vitalite(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], int nbre_fioles)
 {
-    // fonction � impl�menter
+    int i;
+    srand( time( NULL ) );
+    for (i=0;i<nbre_fioles;i++){
+        int valeurx = rand()%48;
+        valeurx++;//si cest 0
+        int valeury = rand()%38;
+        valeury++;//si cest 0
+        scene[valeurx][valeury]=CASE_VITALITE;
+    }
 }
 
 // _________________________________________________________________________
