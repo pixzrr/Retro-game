@@ -88,9 +88,15 @@ int main()
         deplacer_personnage(scene, personnage_principal, touche);
 
         //***annimer ennemi
-        animer_ennemi(scene, ennemi1);
+        int j;
+        j++;
+        if (j==FACTEUR_RALENTISSEMENT){
+            animer_ennemi(scene, ennemi1);
+            animer_ennemi(scene, ennemi3);
+            j=0;
+        }
         animer_ennemi(scene, ennemi2);
-        animer_ennemi(scene, ennemi3);
+
 
         //***detecter collision
         if (detecter_collision(personnage_principal, ennemi1) == 1) personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]--;
@@ -100,15 +106,6 @@ int main()
         //***durée jeu
         Sleep(tempsattente);
         tempsmsec=tempsmsec+25;
-
-        //***diminuer  la vie en permanence
-        int i;
-        i++;
-        if (i==3){
-            i=0;
-            //personnage_principal[INDEX_PERSONNAGE_VITALITE]--;
-        }
-
 
         //Detecter fin du jeu
         if (personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] == 0) {
@@ -180,8 +177,8 @@ void ajouter_contour(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
  */
 void ajouter_obstacles(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
 {
-    for (int x=10 ; x<=20 ; x++) scene[x][5] = CASE_OBSTACLE;
-    for (int y=5 ; y<=15; y++) scene[10][y] = CASE_OBSTACLE;
+    for (int x=10 ; x<20 ; x++) scene[x][5] = CASE_OBSTACLE;
+    for (int y=5 ; y<15; y++) scene[10][y] = CASE_OBSTACLE;
 }
 
 
