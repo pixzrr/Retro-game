@@ -52,7 +52,7 @@ int main()
 
     //Parametrer vies restantes
     personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] = 3;
-    personnage_principal[INDEX_PERSONNAGE_VITALITE] = 5;
+    personnage_principal[INDEX_PERSONNAGE_VITALITE] = 100;
     unsigned int nbre_de_pieces=7;
     ajouter_pieces_or(scene,nbre_de_pieces);
 
@@ -450,3 +450,4 @@ void debug_personnage_principal(unsigned int personnage_principal[NBRE_PROPRIETE
     init_text_cursor(0, TAILLE_SCENE_Y+1, WHITE, BLACK);
     printf("Position personnage {x=%d ; y=%d}", personnage_principal[INDEX_PERSONNAGE_POS_X], personnage_principal[INDEX_PERSONNAGE_POS_Y]);
 }
+
