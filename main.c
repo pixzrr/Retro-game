@@ -118,6 +118,7 @@ int main()
                 printf("%c", texte[i]);
             }
             init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
+            afficher_scene(scene);
             sleep(1); // Pour eviter que le joueur ferme le programme sans faire exprès
             return 0;
         }
@@ -128,6 +129,7 @@ int main()
                 printf("%c", texte[i]);
             }
             init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
+            afficher_scene(scene);
             sleep(1); // Pour eviter que le joueur ferme le programme sans faire exprès
             return 0;
         }
@@ -383,6 +385,7 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
     pos_ennemi_y = ennemi[1];
 
     scene[pos_ennemi_x][pos_ennemi_y] = CASE_ENNEMI;
+    afficher_scene(scene);
 }
 
 
@@ -401,10 +404,10 @@ int detecter_collision(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
         if (personnage_principal[0] == ennemi[0] && personnage_principal[1] == ennemi[1]){
                 collision = 1;
                 char message[] = "Colisionnage";
-                init_text_cursor(0, TAILLE_SCENE_Y, RED, BLACK);
+                init_text_cursor(0, TAILLE_SCENE_Y+7, RED, BLACK);
                 puts(message);
                 sleep(1,5);
-                init_text_cursor(0, TAILLE_SCENE_Y, BLACK, BLACK);
+                init_text_cursor(0, TAILLE_SCENE_Y+7, BLACK, BLACK);
                 puts(message);
         }
 
@@ -435,6 +438,9 @@ void afficher_informations_jeu(int duree_jeu, int vitalite, int pieces_or, int v
     init_text_cursor(0, TAILLE_SCENE_Y+5, WHITE, BLACK);
     printf("Vies_restantes :%d ", vies_restantes);
 }
+// _________________________________________________________________________
+// _________________________________________________________________________
+void calculer_scrore_partiel(int personnage_principal);
 
 
 // _________________________________________________________________________
@@ -450,4 +456,3 @@ void debug_personnage_principal(unsigned int personnage_principal[NBRE_PROPRIETE
     init_text_cursor(0, TAILLE_SCENE_Y+1, WHITE, BLACK);
     printf("Position personnage {x=%d ; y=%d}", personnage_principal[INDEX_PERSONNAGE_POS_X], personnage_principal[INDEX_PERSONNAGE_POS_Y]);
 }
-
