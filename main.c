@@ -132,14 +132,13 @@ int main()
         //Detecter fin du jeu
         if (personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] == 0) {
             char texte[] = "Perdu !";
-            for (int i=0 ; i<strlen(texte) ; i++) {
-                init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, RED,BLACK);
-                printf("%c", texte[i]);
-            }
+            init_text_cursor(TAILLE_SCENE_X/2, TAILLE_SCENE_Y/2, RED,BLACK);
+            printf("Perdu !");
 
             int score_final = personnage_principal[SCORE_PARTIEL] + (personnage_principal[DISTANCE_PARCOURUE]*2);
-            init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, WHITE,BLACK);
-            printf("%d", score_final);
+            init_text_cursor(TAILLE_SCENE_X/2, TAILLE_SCENE_Y/2+1, WHITE,BLACK);
+
+            printf("Score final : %d", score_final);
 
             init_text_cursor(0, TAILLE_SCENE_Y+8, WHITE,BLACK);
             afficher_scene(scene);
@@ -147,15 +146,16 @@ int main()
             return 0;
         }
         if (personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES] == 4) {
-            char texte[] = "Victoire !";
-            for (int i=0 ; i<strlen(texte) ; i++) {
-                init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, GREEN,BLACK);
-                printf("%c", texte[i]);
-            }
+            init_text_cursor(TAILLE_SCENE_X/2, TAILLE_SCENE_Y/2, GREEN,BLACK);
+            printf("Victoire !");
+
+            int score_final = personnage_principal[SCORE_PARTIEL] + (personnage_principal[DISTANCE_PARCOURUE]*4);
+            init_text_cursor(TAILLE_SCENE_X/2, TAILLE_SCENE_Y/2+1, WHITE,BLACK);
+
+            printf("Score final : %d", score_final);
+
             init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
             afficher_scene(scene);
-
-
             sleep(3); // Pour eviter que le joueur ferme le programme sans faire exprès
             return 0;
         }
@@ -374,7 +374,19 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
     int pos_ennemi_x = ennemi[0];
     int pos_ennemi_y = ennemi[1];
 
-    scene[pos_ennemi_x][pos_ennemi_y] = CASE_VIDE;
+    switch(scene[pos_ennemi_x][pos_ennemi_y]) {
+        case CASE_VIDE:
+            scene[pos_ennemi_x][pos_ennemi_y] = CASE_VIDE;
+            break;
+        case CASE_PIECE_OR:
+            scene[pos_ennemi_x][pos_ennemi_y] = CASE_PIECE_OR;
+            break;
+        case CASE_VITALITE:
+            scene[pos_ennemi_x][pos_ennemi_y] = CASE_VITALITE;
+            break;
+        default:
+            scene[pos_ennemi_x][pos_ennemi_y] = CASE_VITALITE;
+    }
 
     switch(ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT]) {
         case SENS_DEPLACEMENT_HAUT:
@@ -384,6 +396,7 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
                     ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_BAS;
             }
             break;
+
         case SENS_DEPLACEMENT_BAS:
             if (ennemi[1]<TAILLE_SCENE_Y-2 && scene[pos_ennemi_x][pos_ennemi_y+1] != CASE_OBSTACLE) ennemi[1]++;
             else {
@@ -391,6 +404,7 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
                     ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_HAUT;
             }
             break;
+
         case SENS_DEPLACEMENT_GAUCHE:
             if (ennemi[0]>1 && scene[pos_ennemi_x-1][pos_ennemi_y] != CASE_OBSTACLE) ennemi[0]--;
             else {
@@ -398,6 +412,7 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
                     ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_DROITE;
             }
             break;
+
         case SENS_DEPLACEMENT_DROITE:
             if (ennemi[0]<TAILLE_SCENE_X-2 && scene[pos_ennemi_x+1][pos_ennemi_y] != CASE_OBSTACLE) ennemi[0]++;
             else {
