@@ -160,7 +160,6 @@ int main()
                 fprintf(fp,"Vitalite :%d pct\n", personnage_principal[INDEX_PERSONNAGE_VITALITE]);
                 fprintf(fp,"Pieces d'or :%d \n", personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES]);
                 fprintf(fp,"Vies_restantes :%d \n", personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
-                fprintf(fp, "Hello, world\n");
                 fclose(fp);
             }
             else
@@ -497,3 +496,4 @@ void debug_personnage_principal(unsigned int personnage_principal[NBRE_PROPRIETE
     init_text_cursor(0, TAILLE_SCENE_Y+1, WHITE, BLACK);
     printf("Position personnage {x=%d ; y=%d}", personnage_principal[INDEX_PERSONNAGE_POS_X], personnage_principal[INDEX_PERSONNAGE_POS_Y]);
 }
+
