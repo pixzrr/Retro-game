@@ -39,6 +39,7 @@ int main()
     personnage_principal[SCORE_PARTIEL] = 0;
 
 
+
     nettoyer_la_scene(scene);
     ajouter_contour(scene);
     ajouter_obstacles(scene);
@@ -64,6 +65,7 @@ int main()
     unsigned int nbre_fioles=2;
     ajouter_vitalite(scene,nbre_fioles);
 
+
     while ( 1 )
     {
         afficher_scene(scene);
@@ -75,19 +77,15 @@ int main()
         switch(touche_appuyee()) {
         case key_UP:
             touche = SENS_DEPLACEMENT_HAUT;
-            personnage_principal[DISTANCE_PARCOURUE] += 1; // pour calculer le score
             break;
         case key_DOWN:
             touche = SENS_DEPLACEMENT_BAS;
-            personnage_principal[DISTANCE_PARCOURUE] += 1; // pour calculer le score
             break;
         case key_LEFT:
             touche = SENS_DEPLACEMENT_GAUCHE;
-            personnage_principal[DISTANCE_PARCOURUE] += 1; // pour calculer le score
             break;
         case key_RIGHT:
             touche = SENS_DEPLACEMENT_DROITE;
-            personnage_principal[DISTANCE_PARCOURUE] += 1; // pour calculer le score
             break;
         case AUCUNE_TOUCHE_APPUYEE:
             touche = AUCUNE_TOUCHE_APPUYEE;
@@ -95,15 +93,24 @@ int main()
         //printf("\n\n\n%d\n\n\n", touche); //debug
         deplacer_personnage(scene, personnage_principal, touche);
 
-
         //***annimer ennemi
         int j;
         j++;
-        if (j==FACTEUR_RALENTISSEMENT){
-            animer_ennemi(scene, ennemi1);
-            animer_ennemi(scene, ennemi3);
-            j=0;
+        if (tempsmsec<=45000){
+            if (j==FACTEUR_RALENTISSEMENT){
+                animer_ennemi(scene, ennemi1);
+            }
         }
+        else animer_ennemi(scene, ennemi1);
+
+        if (tempsmsec<=60000){
+            if (j==FACTEUR_RALENTISSEMENT){
+                animer_ennemi(scene, ennemi3);
+            }
+        }
+        else animer_ennemi(scene, ennemi3);
+
+        if (j==FACTEUR_RALENTISSEMENT)j=0;
         animer_ennemi(scene, ennemi2);
 
 
@@ -116,17 +123,10 @@ int main()
         Sleep(tempsattente);
         tempsmsec=tempsmsec+25;
 
+        //Score partiel
         calculer_scrore_partiel(personnage_principal, tempsmsec, &tempsmsec_buffer, &nb_pieces_buffer);
         init_text_cursor(0, TAILLE_SCENE_Y+6, WHITE, BLACK);
         printf("Score :%d ", personnage_principal[SCORE_PARTIEL]);
-
-        //***diminuer  la vie en permanence
-        int i;
-        i++;
-        if (i==3){
-            i=0;
-            //personnage_principal[INDEX_PERSONNAGE_VITALITE]--;
-        }
 
 
         //Detecter fin du jeu
@@ -221,9 +221,14 @@ void ajouter_obstacles(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y])
  */
 void ajouter_personnage_principal(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL], int x_initial, int y_initial)
 {
+    srand( time( NULL ) );
+        x_initial = rand()%48;
+        x_initial++;//si cest 0
+        y_initial = rand()%38;
+        y_initial++;//si cest 0
     scene[x_initial][y_initial]=CASE_PERSONNAGE;
-    personnage_principal[0]=x_initial;
-    personnage_principal[1]=y_initial;
+    personnage_principal[INDEX_PERSONNAGE_POS_X]=x_initial;
+    personnage_principal[INDEX_PERSONNAGE_POS_Y]=y_initial;
 }
 
 // _________________________________________________________________________
@@ -374,19 +379,7 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
     int pos_ennemi_x = ennemi[0];
     int pos_ennemi_y = ennemi[1];
 
-    switch(scene[pos_ennemi_x][pos_ennemi_y]) {
-        case CASE_VIDE:
-            scene[pos_ennemi_x][pos_ennemi_y] = CASE_VIDE;
-            break;
-        case CASE_PIECE_OR:
-            scene[pos_ennemi_x][pos_ennemi_y] = CASE_PIECE_OR;
-            break;
-        case CASE_VITALITE:
-            scene[pos_ennemi_x][pos_ennemi_y] = CASE_VITALITE;
-            break;
-        default:
-            scene[pos_ennemi_x][pos_ennemi_y] = CASE_VITALITE;
-    }
+    scene[pos_ennemi_x][pos_ennemi_y] = CASE_VIDE;
 
     switch(ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT]) {
         case SENS_DEPLACEMENT_HAUT:
@@ -396,7 +389,6 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
                     ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_BAS;
             }
             break;
-
         case SENS_DEPLACEMENT_BAS:
             if (ennemi[1]<TAILLE_SCENE_Y-2 && scene[pos_ennemi_x][pos_ennemi_y+1] != CASE_OBSTACLE) ennemi[1]++;
             else {
@@ -404,7 +396,6 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
                     ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_HAUT;
             }
             break;
-
         case SENS_DEPLACEMENT_GAUCHE:
             if (ennemi[0]>1 && scene[pos_ennemi_x-1][pos_ennemi_y] != CASE_OBSTACLE) ennemi[0]--;
             else {
@@ -412,7 +403,6 @@ void animer_ennemi(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y], unsigned
                     ennemi[INDEX_ENNEMI_SENS_DEPLACEMENT] = SENS_DEPLACEMENT_DROITE;
             }
             break;
-
         case SENS_DEPLACEMENT_DROITE:
             if (ennemi[0]<TAILLE_SCENE_X-2 && scene[pos_ennemi_x+1][pos_ennemi_y] != CASE_OBSTACLE) ennemi[0]++;
             else {
@@ -445,10 +435,10 @@ int detecter_collision(unsigned int personnage_principal[NBRE_PROPRIETES_PERSONN
         if (personnage_principal[0] == ennemi[0] && personnage_principal[1] == ennemi[1]){
                 collision = 1;
                 char message[] = "Colisionnage";
-                init_text_cursor(0, TAILLE_SCENE_Y+8, RED, BLACK);
+                init_text_cursor(0, TAILLE_SCENE_Y+7, RED, BLACK);
                 puts(message);
                 sleep(1,5);
-                init_text_cursor(0, TAILLE_SCENE_Y+8, BLACK, BLACK);
+                init_text_cursor(0, TAILLE_SCENE_Y+7, BLACK, BLACK);
                 puts(message);
         }
 
