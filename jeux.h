@@ -1,11 +1,11 @@
 #ifndef JEUX_H_INCLUDED
 #define JEUX_H_INCLUDED
 
-//! DÈfinition de la taille de la scËne
+//! D√©finition de la taille de la sc√®ne
 #define TAILLE_SCENE_X  50
 #define TAILLE_SCENE_Y  40
 
-//! ReprÈsentation des ÈlÈments de jeu en mÈmoire
+//! Repr√©sentation des √©l√©ments de jeu en m√©moire
 #define CASE_VIDE       0
 #define CASE_CONTOUR    1
 #define CASE_OBSTACLE   2
@@ -16,7 +16,7 @@
 #define CASE_VIE        7
 
 
-// DÈfinition de la reprÈsentation des ÈlÈments sur la scËne
+// D√©finition de la repr√©sentation des √©l√©ments sur la sc√®ne
 #define COULEUR_CASE_VIDE           BLACK
 #define COULEUR_CASE_CONTOUR        LIGHT_GRAY
 #define COULEUR_CASE_OBSTACLE       BLUE
@@ -25,14 +25,15 @@
 #define COULEUR_TEXTE_PIECE_OR      YELLOW
 #define COULEUR_TEXTE_VITALITE      GREEN
 
-// Sens de dÈplacement d'un personnage ou ennemi sur le terrain
+// Sens de d√©placement d'un personnage ou ennemi sur le terrain
 #define SENS_DEPLACEMENT_HAUT   0
 #define SENS_DEPLACEMENT_BAS    1
 #define SENS_DEPLACEMENT_GAUCHE 2
 #define SENS_DEPLACEMENT_DROITE 3
+#define FACTEUR_RALENTISSEMENT 3
 
-// PropriÈtÈs des personnages
-#define NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL    6
+// Propri√©t√©s des personnages
+#define NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL    8 //valeur modifi√©√©
 // -----------------------------------------------
 #define INDEX_PERSONNAGE_POS_X                  0
 #define INDEX_PERSONNAGE_POS_Y                  1
@@ -40,6 +41,8 @@
 #define INDEX_PERSONNAGE_VITALITE               3
 #define INDEX_PERSONNAGE_ETAT_VIRUS             4
 #define INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES  5
+#define SCORE_PARTIEL                           6 //nouvelle propri√©t√©
+#define DISTANCE_PARCOURUE                      7 //nouvelle propri√©t√©
 
 
 #define NBRE_PROPRIETES_ENNEMI                  4
