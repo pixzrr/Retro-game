@@ -59,6 +59,7 @@ int main()
     unsigned int nbre_fioles=2;
     ajouter_vitalite(scene,nbre_fioles);
 
+
     while ( 1 )
     {
         afficher_scene(scene);
@@ -125,6 +126,20 @@ int main()
             }
             init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
             afficher_scene(scene);
+            FILE *fp;
+            fp  = fopen ("score.txt", "w");
+
+            if (fp != NULL)
+            {
+                fprintf(fp,"Duree du jeu :%d \n",tempsmsec);
+                fprintf(fp,"Vitalite :%d pct\n", personnage_principal[INDEX_PERSONNAGE_VITALITE]);
+                fprintf(fp,"Pieces d'or :%d \n", personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES]);
+                fprintf(fp,"Vies_restantes :%d \n", personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
+                fclose(fp);
+            }
+            else
+                perror("score.txt");
+
             sleep(1); // Pour eviter que le joueur ferme le programme sans faire exprès
             return 0;
         }
@@ -136,6 +151,21 @@ int main()
             }
             init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
             afficher_scene(scene);
+            FILE *fp;
+            fp  = fopen ("score.txt", "w");
+
+            if (fp != NULL)
+            {
+                fprintf(fp,"Duree du jeu :%d \n",tempsmsec);
+                fprintf(fp,"Vitalite :%d pct\n", personnage_principal[INDEX_PERSONNAGE_VITALITE]);
+                fprintf(fp,"Pieces d'or :%d \n", personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES]);
+                fprintf(fp,"Vies_restantes :%d \n", personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
+                fprintf(fp, "Hello, world\n");
+                fclose(fp);
+            }
+            else
+                perror("score.txt");
+
             sleep(1); // Pour eviter que le joueur ferme le programme sans faire exprès
             return 0;
         }
