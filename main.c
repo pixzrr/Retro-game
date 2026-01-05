@@ -32,6 +32,12 @@ int main()
     unsigned int tempsmsec=0;
     // variable pour deplacer personnage
     int touche;
+    // variable temps buffer
+    int tempsmsec_buffer=0;
+    int nb_pieces_buffer=0;
+    // initialiser le score
+    personnage_principal[SCORE_PARTIEL] = 0;
+
 
 
     nettoyer_la_scene(scene);
@@ -117,55 +123,42 @@ int main()
         Sleep(tempsattente);
         tempsmsec=tempsmsec+25;
 
+        //Score partiel
+        calculer_scrore_partiel(personnage_principal, tempsmsec, &tempsmsec_buffer, &nb_pieces_buffer);
+        init_text_cursor(0, TAILLE_SCENE_Y+6, WHITE, BLACK);
+        printf("Score :%d ", personnage_principal[SCORE_PARTIEL]);
+
+        printf("%d", personnage_principal[DISTANCE_PARCOURUE]);
+
+
         //Detecter fin du jeu
         if (personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES] == 0) {
             char texte[] = "Perdu !";
-            for (int i=0 ; i<strlen(texte) ; i++) {
-                init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, RED,BLACK);
-                printf("%c", texte[i]);
-            }
-            init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
+            init_text_cursor(TAILLE_SCENE_X/2, TAILLE_SCENE_Y/2, RED,BLACK);
+            printf("Perdu !");
+
+            int score_final = personnage_principal[SCORE_PARTIEL] + (personnage_principal[DISTANCE_PARCOURUE]*2);
+            init_text_cursor(TAILLE_SCENE_X/2, TAILLE_SCENE_Y/2+1, WHITE,BLACK);
+
+            printf("Score final : %d", score_final);
+
+            init_text_cursor(0, TAILLE_SCENE_Y+8, WHITE,BLACK);
             afficher_scene(scene);
-            FILE *fp;
-            fp  = fopen ("score.txt", "w");
-
-            if (fp != NULL)
-            {
-                fprintf(fp,"Duree du jeu :%d \n",tempsmsec);
-                fprintf(fp,"Vitalite :%d pct\n", personnage_principal[INDEX_PERSONNAGE_VITALITE]);
-                fprintf(fp,"Pieces d'or :%d \n", personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES]);
-                fprintf(fp,"Vies_restantes :%d \n", personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
-                fclose(fp);
-            }
-            else
-                perror("score.txt");
-
-            sleep(1); // Pour eviter que le joueur ferme le programme sans faire exprès
+            sleep(3); // Pour eviter que le joueur ferme le programme sans faire exprès
             return 0;
         }
         if (personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES] == 4) {
-            char texte[] = "Victoire !";
-            for (int i=0 ; i<strlen(texte) ; i++) {
-                init_text_cursor(TAILLE_SCENE_X/2+i, TAILLE_SCENE_Y/2, GREEN,BLACK);
-                printf("%c", texte[i]);
-            }
+            init_text_cursor(TAILLE_SCENE_X/2, TAILLE_SCENE_Y/2, GREEN,BLACK);
+            printf("Victoire !");
+
+            int score_final = personnage_principal[SCORE_PARTIEL] + (personnage_principal[DISTANCE_PARCOURUE]*4);
+            init_text_cursor(TAILLE_SCENE_X/2, TAILLE_SCENE_Y/2+1, WHITE,BLACK);
+
+            printf("Score final : %d", score_final);
+
             init_text_cursor(0, TAILLE_SCENE_Y, WHITE,BLACK);
             afficher_scene(scene);
-            FILE *fp;
-            fp  = fopen ("score.txt", "w");
-
-            if (fp != NULL)
-            {
-                fprintf(fp,"Duree du jeu :%d \n",tempsmsec);
-                fprintf(fp,"Vitalite :%d pct\n", personnage_principal[INDEX_PERSONNAGE_VITALITE]);
-                fprintf(fp,"Pieces d'or :%d \n", personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES]);
-                fprintf(fp,"Vies_restantes :%d \n", personnage_principal[INDEX_PERSONNAGE_NBRE_VIES_RESTANTES]);
-                fclose(fp);
-            }
-            else
-                perror("score.txt");
-
-            sleep(1); // Pour eviter que le joueur ferme le programme sans faire exprès
+            sleep(3); // Pour eviter que le joueur ferme le programme sans faire exprès
             return 0;
         }
 
@@ -261,15 +254,20 @@ void deplacer_personnage(unsigned char scene[TAILLE_SCENE_X][TAILLE_SCENE_Y],
     switch(sens_deplacement) {
         case SENS_DEPLACEMENT_HAUT:
             if (personnage_principal[1]>1 && scene[pos_perso_x][pos_perso_y-1] != CASE_OBSTACLE) personnage_principal[1]--;
+            personnage_principal[DISTANCE_PARCOURUE]++;
             break;
         case SENS_DEPLACEMENT_BAS:
             if (personnage_principal[1]<TAILLE_SCENE_Y-2 && scene[pos_perso_x][pos_perso_y+1] != CASE_OBSTACLE) personnage_principal[1]++;
+            personnage_principal[DISTANCE_PARCOURUE]++;
             break;
         case SENS_DEPLACEMENT_GAUCHE:
             if (personnage_principal[0]>1 && scene[pos_perso_x-1][pos_perso_y] != CASE_OBSTACLE) personnage_principal[0]--;
+            personnage_principal[DISTANCE_PARCOURUE]++;
             break;
         case SENS_DEPLACEMENT_DROITE:
             if (personnage_principal[0]<TAILLE_SCENE_X-2 && scene[pos_perso_x+1][pos_perso_y] != CASE_OBSTACLE) personnage_principal[0]++;
+            personnage_principal[DISTANCE_PARCOURUE]++;
+            break;
     }
 
     pos_perso_x = personnage_principal[0];
@@ -480,7 +478,17 @@ void afficher_informations_jeu(int duree_jeu, int vitalite, int pieces_or, int v
 }
 // _________________________________________________________________________
 // _________________________________________________________________________
-void calculer_scrore_partiel(int personnage_principal);
+void calculer_scrore_partiel(int personnage_principal[NBRE_PROPRIETES_PERSONNAGE_PRINCIPAL], int temps_jeu, int *buffer_temps_jeu, int *buffer_nb_pieces) { // NOUVELLE FONCTION
+    int test_pieces = personnage_principal[INDEX_PERSONNAGE_NBRE_PIECES_RECOLTEES] - *buffer_nb_pieces;
+    if (temps_jeu - *buffer_temps_jeu >=1000) {
+            personnage_principal[SCORE_PARTIEL]+=2;
+            *buffer_temps_jeu+=1000 ;
+    }
+    if (test_pieces >= 1) {
+        personnage_principal[SCORE_PARTIEL]+=100*test_pieces;
+        *buffer_nb_pieces+=test_pieces;
+    }
+}
 
 
 // _________________________________________________________________________
@@ -496,4 +504,3 @@ void debug_personnage_principal(unsigned int personnage_principal[NBRE_PROPRIETE
     init_text_cursor(0, TAILLE_SCENE_Y+1, WHITE, BLACK);
     printf("Position personnage {x=%d ; y=%d}", personnage_principal[INDEX_PERSONNAGE_POS_X], personnage_principal[INDEX_PERSONNAGE_POS_Y]);
 }
-
